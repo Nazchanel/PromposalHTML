@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Big Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .container { position: relative; text-align: center; }
+        .header { font-size: 36px; font-weight: bold; animation: moveUp 1s forwards; }
+        @keyframes moveUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .word { display: inline-block; position: relative; opacity: 0; animation: flyIn 0.5s ease forwards; }
+        @keyframes flyIn {
+            0% { opacity: 0; transform: translateY(-100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .word:nth-child(odd) { animation-name: flyInFromBottom; }
+        @keyframes flyInFromBottom {
+            0% { opacity: 0; transform: translateY(100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .word { animation-delay: calc(0.5s * var(--index)); }
+        .button { opacity: 0; animation: fadeIn 1s forwards; text-align: center; padding: 2rem 3rem; font-size: 2rem;
+            font-weight: 700; background-color: gold; border-radius: 2rem; border-width: 0; }
+        .button-wrapper { display: flex; margin-top: 5rem; justify-content: center; column-gap: 2rem; }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="word" style="--index: 1;">FirstName,</span>
+            <span class="word" style="--index: 2;">will</span>
+            <span class="word" style="--index: 3;">you</span>
+            <span class="word" style="--index: 4;">go</span>
+            <span class="word" style="--index: 5;">to</span>
+            <span class="word" style="--index: 6;">prom</span>
+            <span class="word" style="--index: 7;">with</span>
+            <span class="word" style="--index: 8;">me?</span>
+        </div>
+        <div class="button-wrapper">
+            <button class="button" id="yesButton" style="display:none;" onclick="yes()">Yes!</button>
+            <button class="button" id="noButton" style="display:none;" onclick="moveButton()">No!</button>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            document.getElementById('yesButton').style.display = 'block';
+            document.getElementById('noButton').style.display = 'block';
+        }, 6000);
+
+        function moveButton() {
+            var button = document.getElementById('noButton');
+            var container = document.querySelector('.container');
+            var containerRect = container.getBoundingClientRect();
+            var randomTop = Math.floor(Math.random() * (containerRect.height - button.clientHeight)) + 100;
+            var randomLeft = Math.floor(Math.random() * (containerRect.width - button.clientWidth)) + 100;
+
+            button.style.position = 'absolute';
+            button.style.top = randomTop + 'px';
+            button.style.left = randomLeft + 'px';
+        }
+
+        function yes() {
+            window.location.href = 'yes.html';
+        }
+    </script>
+</body>
+</html>

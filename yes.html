@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yay!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        h1 { font-size: 72px; text-align: center; color: black; }
+        .confetti {
+            position: absolute; width: 10px; height: 10px; animation: confetti-fall 2s linear infinite;
+            opacity: 0; pointer-events: none;
+        }
+        @keyframes confetti-fall {
+            0% { opacity: 1; transform: translateY(-100vh) rotateZ(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotateZ(1080deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Yay!</h1>
+    <script>
+        for (var i = 0; i < 100; i++) {
+            var confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = Math.random() * window.innerHeight + 'px';
+            confetti.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(confetti);
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>

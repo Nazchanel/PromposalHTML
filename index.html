@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        .button {
+            animation: fadeIn 1s forwards;
+            text-align: center;
+            padding: 2rem 3rem;
+            font-size: 2rem;
+            font-family: 'Lucida Sans', sans-serif;
+            font-weight: 700;
+            background-color: gold;
+            border-radius: 2rem;
+            border-width: 0;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            max-width: 700px;
+        }
+        video { width: 100%; height: auto; margin-top: 20px; }
+        .scanning-overlay {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            pointer-events: none;
+            background-image: linear-gradient(to right, transparent 50%, rgba(173, 255, 47, 0.5) 50%),
+                              linear-gradient(to bottom, transparent 50%, rgba(173, 255, 47, 0.5) 50%);
+            background-size: 2px 100%, 100% 2px;
+            animation: scanning 2s infinite;
+        }
+        @keyframes scanning {
+            0% { background-position: -100% 0, 0 -100%; }
+            100% { background-position: 100% 0, 0 100%; }
+        }
+        .scanning-text { font-size: 24px; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Please verify your identity:</h1>
+    <button class="button" id="verification-button" onclick="openCamera()">I am FirstName LastName</button>
+    <p class="scanning-text" id="text">Scanning for facial recognition...</p>
+
+    <script>
+        function openCamera() {
+            document.getElementById('verification-button').style.display = 'none';
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    document.querySelector('.scanning-text').style.display = 'block';
+                    var videoContainer = document.createElement('div');
+                    videoContainer.classList.add('video-container');
+                    document.body.appendChild(videoContainer);
+                    var video = document.createElement('video');
+                    video.setAttribute('autoplay', true);
+                    video.srcObject = stream;
+                    videoContainer.appendChild(video);
+                    var scanningOverlay = document.createElement('div');
+                    scanningOverlay.classList.add('scanning-overlay');
+                    videoContainer.appendChild(scanningOverlay);
+                    setTimeout(function() {
+                        document.getElementById('text').textContent = 'Identity confirmed!';
+                        stream.getTracks().forEach(function(track) { track.stop(); });
+                        window.location.href = 'question.html';
+                    }, 5000);
+                })
+                .catch(function(error) {
+                    console.error('Error accessing camera: ', error);
+                });
+        }
+    </script>
+</body>
+</html>
